@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  db:
+    env_file: .dev.env
+    image: mysql:8.0.28
+    platform: linux/x86_64
+    container_name: geus_db
+    restart: always
+    ports:
+      - ${MYSQL_PORT}:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      volumes:
+        - ./db/mysql/data:/var/lib/mysql'
+        - ./db/mysql/config:/etc/mysql/conf.d
+        - ./db/mysql/init:/docker-entrypoint-initdb.d
+
+  redis:
+    env_file: .dev.env
+    image: redis:7.2-alpine
+    container_name: geus_redis
+    hostname: root
+    ports:
+      - ${REDIS_PORT}:6379
+
